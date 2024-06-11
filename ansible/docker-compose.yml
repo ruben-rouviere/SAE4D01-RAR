@@ -1,0 +1,42 @@
+version: '3'
+services:
+  web-db:
+    image: mysql:latest
+    volumes:
+      - /srv/webdb:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+
+  web:
+    image: wordpress:latest
+    ports:
+      - "3000:80"
+      - "3001:443"
+    depends_on:
+      - web-db
+    environment:
+      WORDPRESS_DB_HOST: web-db:3306
+      WORDPRESS_DB_USER: test
+      WORDPRESS_DB_PASSWORD: test
+      WORDPRESS_DB_NAME: wordpress
+
+  kanban-db:
+    image: mongo:6
+    expose:
+      - 27017
+    volumes: 
+    - /srv/kanbandb:/data/db
+  kanban:
+    image: wekanteam/wekan:latest
+    ports :
+      - "5000:8080"
+    depends_on:
+      - kanban-db
+    environment:
+      - WRITEABLE_PATH=/data/db
+      - ROOT_URL=http://localhost
+      - MONGO_URL=mongodb://kanban-db:27017/wekan

@@ -1,0 +1,11 @@
+
+- name: Deployer les conteneurs
+  hosts: localhost
+  tasks:
+    - name: Verif docker
+      ansible.builtin.package:
+        name: docker
+        state: present
+
+    - name: Docker compose
+      command: docker compose -f docker_compose.yml up -d
