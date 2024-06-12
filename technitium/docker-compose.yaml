@@ -1,6 +1,7 @@
 version: "3"
 networks:
   rar:
+    name: rar
     driver: macvlan
     driver_opts:
       parent: eth0
