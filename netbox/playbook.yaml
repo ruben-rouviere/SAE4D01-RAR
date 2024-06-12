@@ -1,0 +1,23 @@
+
+- name: Deployer les conteneurs
+  hosts: nautobot
+  tasks:
+    - name: Verif docker
+      ansible.builtin.package:
+        name: docker
+        state: present
+    - name: Verif git
+      ansible.builtin.package:
+        name: git
+        state: present
+
+    - name: Copie git netbox
+      command: git clone -b release https://github.com/netbox-community/netbox-docker.git
+
+    - name: Copie du fichier docker-compose
+      copy:
+        src: docker-compose.override.yml
+        dest: /root/netbox-docker
+
+    - name: Docker compose
+      command: docker compose -f ./netbox-docker/docker_compose.yml up -d
