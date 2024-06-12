@@ -1,0 +1,26 @@
+
+- name: Deployer les conteneurs
+  hosts: nautobot
+  tasks:
+    - name: Verif docker
+      ansible.builtin.package:
+        name: docker
+        state: present
+
+    - name: Copie du fichier docker-compose
+      copy:
+        src: docker_compose.yml
+        dest: /root
+
+    - name: Copie du fichier local.env
+      copy:
+        src: local.env
+        dest: /root
+
+    - name: Copie du fichier creds.env
+      copy:
+        src: creds.env
+        dest: /root
+
+    - name: Docker compose
+      command: docker compose -f docker_compose.yml up -d

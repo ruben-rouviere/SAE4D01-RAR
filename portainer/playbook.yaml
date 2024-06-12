@@ -15,7 +15,3 @@
     - name: Docker compose
       command: docker compose -f docker_compose.yml up -d
 
-    - name: Suppression du fichier docker compose
-      command: rm docker_compose.yml
-
-
