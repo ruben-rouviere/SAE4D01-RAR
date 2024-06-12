@@ -1,0 +1,5 @@
+- name: ssh test
+  hosts: portainer
+    tasks:
+      - name: TOUCHER FICHIER
+        command: touch remotefile.txt

@@ -1,12 +1,21 @@
 
 - name: Deployer les conteneurs
-  hosts: localhost
+  hosts: portainer
   tasks:
     - name: Verif docker
       ansible.builtin.package:
         name: docker
         state: present
 
+    - name: Copie du fichier docker-compose
+      copy:
+        src: docker_compose.yml
+        dest: /root
+
     - name: Docker compose
       command: docker compose -f docker_compose.yml up -d
+
+    - name: Suppression du fichier docker compose
+      command: rm docker_compose.yml
+
 
