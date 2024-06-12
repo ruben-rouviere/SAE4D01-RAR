@@ -9,3 +9,4 @@
 
     - name: Docker compose
       command: docker compose -f docker_compose.yml up -d
+

@@ -40,3 +40,11 @@ services:
       - WRITEABLE_PATH=/data/db
       - ROOT_URL=http://localhost
       - MONGO_URL=mongodb://kanban-db:27017/wekan
+
+  nextcloud:
+    image: nextcloud:latest
+    ports:
+      - "9000:9000"
+      - "9001:80"
+    environment:
+      - APACHE_RUN_DIR=/var/www/html
