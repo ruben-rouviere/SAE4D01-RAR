@@ -1,0 +1,21 @@
+name: rar
+
+mgmt:
+  network: mgmt
+  ipv4-subnet: 192.168.123.0/24
+
+topology:
+  nodes:
+    ceos:
+      kind: ceos
+      image: registry.rar.test/library/ceosimage:4.29.02F
+      mgmt-ipv4: 192.168.123.10
+      startup-config: ceos.conf
+    frr:
+      kind: linux
+      image: frrouting/frr
+      mgmt-ipv4: 192.168.123.11
+  links:
+    - endpoints: ["macvlan:eth0", "ceos:eth1"] # MACVLAN: Interface hôte ITCO MAE
+    - endpoints: ["macvlan:enp6s19", "ceos:eth2"] # MACVLAN: Interface hôte ITCO MAE
+    - endpoints: ["macvlan:enp6s20", "ceos:eth3"] # MACVLAN: Interface hôte ITCO salle
