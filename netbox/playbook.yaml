@@ -1,6 +1,6 @@
-
+# ansible-galaxy collection install community.docker
 - name: Deployer les conteneurs
-  hosts: nautobot
+  hosts: netbox
   tasks:
     - name: Verif docker
       ansible.builtin.package:
@@ -12,7 +12,12 @@
         state: present
 
     - name: Copie git netbox
-      command: git clone -b release https://github.com/netbox-community/netbox-docker.git
+      git:
+        repo: https://github.com/netbox-community/netbox-docker.git
+        single_branch: yes
+        version: "release"
+        dest: /root/netbox-docker
+        clone: yes
 
     - name: Copie du fichier docker-compose
       copy:
@@ -20,4 +25,5 @@
         dest: /root/netbox-docker
 
     - name: Docker compose
-      command: docker compose -f ./netbox-docker/docker_compose.yml up -d
+      community.docker.docker_compose_v2:
+        project_src: netbox-docker
