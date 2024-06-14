@@ -1,0 +1,29 @@
+# ansible-galaxy collection install community.docker
+- name: Deployer les conteneurs
+  hosts: netbox
+  tasks:
+    - name: Verif docker
+      ansible.builtin.package:
+        name: docker
+        state: present
+    - name: Verif git
+      ansible.builtin.package:
+        name: git
+        state: present
+
+    - name: Copie git netbox
+      git:
+        repo: https://github.com/netbox-community/netbox-docker.git
+        single_branch: yes
+        version: "release"
+        dest: /root/netbox-docker
+        clone: yes
+
+    - name: Copie du fichier docker-compose
+      copy:
+        src: docker-compose.override.yml
+        dest: /root/netbox-docker
+
+    - name: Docker compose
+      community.docker.docker_compose_v2:
+        project_src: netbox-docker
